@@ -5,13 +5,13 @@ from cryptography.fernet import Fernet
 import string
 import random
 
-# Función para generar una contraseña segura
+# Function to generate a new password
 def generate_password(length=12):
     characters = string.ascii_letters + string.digits + string.punctuation
     password = ''.join(random.choice(characters) for i in range(length))
     return password
 
-# Función para cargar la clave de cifrado desde un archivo o generar una nueva
+# Function to load encryption key from a file or generate a new one
 def load_key():
     if os.path.exists("key.key"):
         with open("key.key", "rb") as key_file:
@@ -22,25 +22,25 @@ def load_key():
             key_file.write(key)
     return key
 
-# Función para cifrar los datos
+# Function to encrypt data
 def encrypt(data, key):
     fernet = Fernet(key)
     encrypted_data = fernet.encrypt(data.encode())
     return encrypted_data
 
-# Función para descifrar los datos
+# Function to decrypt data
 def decrypt(encrypted_data, key):
     fernet = Fernet(key)
     decrypted_data = fernet.decrypt(encrypted_data).decode()
     return decrypted_data
 
-# Función para guardar contraseñas cifradas en un archivo
+# Function to save the new encrypted passwords in a file
 def save_passwords(passwords, key):
     encrypted_data = encrypt(json.dumps(passwords), key)
     with open("passwords.enc", "wb") as file:
         file.write(encrypted_data)
 
-# Función para cargar contraseñas cifradas desde un archivo
+# Function to load the new encrypted passwords from a file
 def load_passwords(key):
     if os.path.exists("passwords.enc"):
         with open("passwords.enc", "rb") as file:
@@ -49,7 +49,7 @@ def load_passwords(key):
     else:
         return {}
 
-# Función principal para gestionar contraseñas
+# Main function to manage passwords
 def main():
     key = load_key()
     
